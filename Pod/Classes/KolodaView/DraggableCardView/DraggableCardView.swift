@@ -101,7 +101,7 @@ public class DraggableCardView: UIView {
     
     private func configureOverlayView() {
         if let overlay = self.overlayView {
-            overlay.setTranslatesAutoresizingMaskIntoConstraints(false)
+            overlay.translatesAutoresizingMaskIntoConstraints = false
             
             let width = NSLayoutConstraint(
                 item: overlay,
@@ -141,7 +141,7 @@ public class DraggableCardView: UIView {
     
     private func configureContentView() {
         if let contentView = self.contentView {
-            contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
+            contentView.translatesAutoresizingMaskIntoConstraints = false
             
             let width = NSLayoutConstraint(
                 item: contentView,
