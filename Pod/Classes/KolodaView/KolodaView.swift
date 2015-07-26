@@ -58,6 +58,7 @@ public protocol KolodaViewDelegate:class {
     func kolodaDidSelectCardAtIndex(koloda: KolodaView, index: UInt)
     func kolodaShouldApplyAppearAnimation(koloda: KolodaView) -> Bool
     func kolodaShouldMoveBackgroundCard(koloda: KolodaView) -> Bool
+    func kolodaDidPresentCard(koloda: KolodaView, index: UInt)
     func kolodaShouldTransparentizeNextCard(koloda: KolodaView) -> Bool
     func kolodaBackgroundCardAnimation(koloda: KolodaView) -> POPPropertyAnimation?
     
@@ -72,7 +73,11 @@ public class KolodaView: UIView, DraggableCardDelegate {
     }
     public weak var delegate: KolodaViewDelegate?
     
-    private(set) public var currentCardNumber = 0
+    private(set) public var currentCardNumber = 0 {
+        didSet {
+            delegate?.kolodaDidPresentCard(self, index: UInt(currentCardNumber))
+        }
+    }
     private(set) public var countOfCards = 0
     
     public var countOfVisibleCards = defaultCountOfVisibleCards
@@ -150,6 +155,8 @@ public class KolodaView: UIView, DraggableCardDelegate {
                     index == 0 ? addSubview(nextCardView) : insertSubview(nextCardView, belowSubview: visibleCards[index - 1])
                 }
             }
+            
+            delegate?.kolodaDidPresentCard(self, index: UInt(currentCardNumber))
         }
     }
     
