@@ -98,7 +98,7 @@ public class KolodaView: UIView, DraggableCardDelegate {
     public var alphaValueSemiTransparent: CGFloat = defaultAlphaValueSemiTransparent
     
     //MARK: Lifecycle
-    required public init(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         configure()
     }
@@ -168,7 +168,7 @@ public class KolodaView: UIView, DraggableCardDelegate {
         }
     }
     
-    private func layoutDeck() {
+    public func layoutDeck() {
         for (index, card) in self.visibleCards.enumerate() {
             card.frame = frameForCardAtIndex(UInt(index))
         }
