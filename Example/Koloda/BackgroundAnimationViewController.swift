@@ -27,7 +27,7 @@ class BackgroundAnimationViewController: UIViewController, KolodaViewDataSource,
         kolodaView.countOfVisibleCards = kolodaCountOfVisibleCards
         kolodaView.dataSource = self
         kolodaView.delegate = self
-        self.modalTransitionStyle = UIModalTransitionStyle.FlipHorizontal
+        self.modalTransitionStyle = UIModalTransitionStyle.flipHorizontal
     }
     
     
@@ -45,45 +45,45 @@ class BackgroundAnimationViewController: UIViewController, KolodaViewDataSource,
     }
     
     //MARK: KolodaViewDataSource
-    func kolodaNumberOfCards(koloda: KolodaView) -> UInt {
+    func kolodaNumberOfCards(_ koloda: KolodaView) -> UInt {
         return numberOfCards
     }
     
-    func kolodaViewForCardAtIndex(koloda: KolodaView, index: UInt) -> UIView {
+    func kolodaViewForCardAtIndex(_ koloda: KolodaView, index: UInt) -> UIView {
         return UIImageView(image: UIImage(named: "cards_\(index + 1)"))
     }
-    func kolodaViewForCardOverlayAtIndex(koloda: KolodaView, index: UInt) -> OverlayView? {
+    func kolodaViewForCardOverlayAtIndex(_ koloda: KolodaView, index: UInt) -> OverlayView? {
         return NSBundle.mainBundle().loadNibNamed("CustomOverlayView",
             owner: self, options: nil)[0] as? OverlayView
     }
     
     //MARK: KolodaViewDelegate
     
-    func kolodaDidSwipedCardAtIndex(koloda: KolodaView, index: UInt, direction: SwipeResultDirection) {
+    func kolodaDidSwipedCardAtIndex(_ koloda: KolodaView, index: UInt, direction: SwipeResultDirection) {
     }
     
-    func kolodaDidRunOutOfCards(koloda: KolodaView) {
+    func kolodaDidRunOutOfCards(_ koloda: KolodaView) {
         //Example: reloading
         kolodaView.resetCurrentCardNumber()
     }
     
-    func kolodaDidSelectCardAtIndex(koloda: KolodaView, index: UInt) {
-        UIApplication.sharedApplication().openURL(NSURL(string: "http://yalantis.com/")!)
+    func kolodaDidSelectCardAtIndex(_ koloda: KolodaView, index: UInt) {
+        UIApplication.shared.openURL(URL(string: "http://yalantis.com/")!)
     }
     
-    func kolodaShouldApplyAppearAnimation(koloda: KolodaView) -> Bool {
+    func kolodaShouldApplyAppearAnimation(_ koloda: KolodaView) -> Bool {
         return true
     }
     
-    func kolodaShouldMoveBackgroundCard(koloda: KolodaView) -> Bool {
+    func kolodaShouldMoveBackgroundCard(_ koloda: KolodaView) -> Bool {
         return false
     }
     
-    func kolodaShouldTransparentizeNextCard(koloda: KolodaView) -> Bool {
+    func kolodaShouldTransparentizeNextCard(_ koloda: KolodaView) -> Bool {
         return false
     }
     
-    func kolodaBackgroundCardAnimation(koloda: KolodaView) -> POPPropertyAnimation? {
+    func kolodaBackgroundCardAnimation(_ koloda: KolodaView) -> POPPropertyAnimation? {
         let animation = POPSpringAnimation(propertyNamed: kPOPViewFrame)
         animation.springBounciness = frameAnimationSpringBounciness
         animation.springSpeed = frameAnimationSpringSpeed

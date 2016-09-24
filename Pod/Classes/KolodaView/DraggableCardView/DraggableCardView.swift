@@ -11,10 +11,10 @@ import pop
 
 protocol DraggableCardDelegate: class {
     
-    func cardDraggedWithFinishPercent(card: DraggableCardView, percent: CGFloat)
-    func cardSwippedInDirection(card: DraggableCardView, direction: SwipeResultDirection)
-    func cardWasReset(card: DraggableCardView)
-    func cardTapped(card: DraggableCardView)
+    func cardDraggedWithFinishPercent(_ card: DraggableCardView, percent: CGFloat)
+    func cardSwippedInDirection(_ card: DraggableCardView, direction: SwipeResultDirection)
+    func cardWasReset(_ card: DraggableCardView)
+    func cardTapped(_ card: DraggableCardView)
     
 }
 
@@ -22,13 +22,13 @@ protocol DraggableCardDelegate: class {
 private let rotationMax: CGFloat = 1.0
 private let defaultRotationAngle = CGFloat(M_PI) / 10.0
 private let scaleMin: CGFloat = 0.8
-public let cardSwipeActionAnimationDuration: NSTimeInterval  = 0.4
+public let cardSwipeActionAnimationDuration: TimeInterval  = 0.4
 
 //Reset animation constants
 private let cardResetAnimationSpringBounciness: CGFloat = 10.0
 private let cardResetAnimationSpringSpeed: CGFloat = 20.0
 private let cardResetAnimationKey = "resetPositionAnimation"
-private let cardResetAnimationDuration: NSTimeInterval = 0.2
+private let cardResetAnimationDuration: TimeInterval = 0.2
 
 public class DraggableCardView: UIView {
     
@@ -49,7 +49,7 @@ public class DraggableCardView: UIView {
     
     //MARK: Lifecycle
     init() {
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
         setup()
     }
     
@@ -82,7 +82,7 @@ public class DraggableCardView: UIView {
     }
     
     //MARK: Configurations
-    func configure(view: UIView, overlayView: OverlayView?) {
+    func configure(_ view: UIView, overlayView: OverlayView?) {
         self.overlayView?.removeFromSuperview()
         
         if let overlay = overlayView {
@@ -106,34 +106,34 @@ public class DraggableCardView: UIView {
             
             let width = NSLayoutConstraint(
                 item: overlay,
-                attribute: NSLayoutAttribute.Width,
-                relatedBy: NSLayoutRelation.Equal,
+                attribute: NSLayoutAttribute.width,
+                relatedBy: NSLayoutRelation.equal,
                 toItem: self,
-                attribute: NSLayoutAttribute.Width,
+                attribute: NSLayoutAttribute.width,
                 multiplier: 1.0,
                 constant: 0)
             let height = NSLayoutConstraint(
                 item: overlay,
-                attribute: NSLayoutAttribute.Height,
-                relatedBy: NSLayoutRelation.Equal,
+                attribute: NSLayoutAttribute.height,
+                relatedBy: NSLayoutRelation.equal,
                 toItem: self,
-                attribute: NSLayoutAttribute.Height,
+                attribute: NSLayoutAttribute.height,
                 multiplier: 1.0,
                 constant: 0)
             let top = NSLayoutConstraint (
                 item: overlay,
-                attribute: NSLayoutAttribute.Top,
-                relatedBy: NSLayoutRelation.Equal,
+                attribute: NSLayoutAttribute.top,
+                relatedBy: NSLayoutRelation.equal,
                 toItem: self,
-                attribute: NSLayoutAttribute.Top,
+                attribute: NSLayoutAttribute.top,
                 multiplier: 1.0,
                 constant: 0)
             let leading = NSLayoutConstraint (
                 item: overlay,
-                attribute: NSLayoutAttribute.Leading,
-                relatedBy: NSLayoutRelation.Equal,
+                attribute: NSLayoutAttribute.leading,
+                relatedBy: NSLayoutRelation.equal,
                 toItem: self,
-                attribute: NSLayoutAttribute.Leading,
+                attribute: NSLayoutAttribute.leading,
                 multiplier: 1.0,
                 constant: 0)
             addConstraints([width,height,top,leading])
@@ -146,34 +146,34 @@ public class DraggableCardView: UIView {
             
             let width = NSLayoutConstraint(
                 item: contentView,
-                attribute: NSLayoutAttribute.Width,
-                relatedBy: NSLayoutRelation.Equal,
+                attribute: NSLayoutAttribute.width,
+                relatedBy: NSLayoutRelation.equal,
                 toItem: self,
-                attribute: NSLayoutAttribute.Width,
+                attribute: NSLayoutAttribute.width,
                 multiplier: 1.0,
                 constant: 0)
             let height = NSLayoutConstraint(
                 item: contentView,
-                attribute: NSLayoutAttribute.Height,
-                relatedBy: NSLayoutRelation.Equal,
+                attribute: NSLayoutAttribute.height,
+                relatedBy: NSLayoutRelation.equal,
                 toItem: self,
-                attribute: NSLayoutAttribute.Height,
+                attribute: NSLayoutAttribute.height,
                 multiplier: 1.0,
                 constant: 0)
             let top = NSLayoutConstraint (
                 item: contentView,
-                attribute: NSLayoutAttribute.Top,
-                relatedBy: NSLayoutRelation.Equal,
+                attribute: NSLayoutAttribute.top,
+                relatedBy: NSLayoutRelation.equal,
                 toItem: self,
-                attribute: NSLayoutAttribute.Top,
+                attribute: NSLayoutAttribute.top,
                 multiplier: 1.0,
                 constant: 0)
             let leading = NSLayoutConstraint (
                 item: contentView,
-                attribute: NSLayoutAttribute.Leading,
-                relatedBy: NSLayoutRelation.Equal,
+                attribute: NSLayoutAttribute.leading,
+                relatedBy: NSLayoutRelation.equal,
                 toItem: self,
-                attribute: NSLayoutAttribute.Leading,
+                attribute: NSLayoutAttribute.leading,
                 multiplier: 1.0,
                 constant: 0)
             
@@ -184,13 +184,13 @@ public class DraggableCardView: UIView {
     //MARK: GestureRecozniers
     
     func panGestureRecognized(gestureRecognizer: UIPanGestureRecognizer) {
-        xDistanceFromCenter = gestureRecognizer.translationInView(self).x
-        yDistanceFromCenter = gestureRecognizer.translationInView(self).y
+        xDistanceFromCenter = gestureRecognizer.translation(in: self).x
+        yDistanceFromCenter = gestureRecognizer.translation(in: self).y
         
-        let touchLocation = gestureRecognizer.locationInView(self)
+        let touchLocation = gestureRecognizer.location(in: self)
         
         switch gestureRecognizer.state {
-        case .Began:
+        case .began:
             if firstTouch {
                 originalLocation = center
                 firstTouch = false
@@ -203,16 +203,16 @@ public class DraggableCardView: UIView {
             
             pop_removeAllAnimations()
             break
-        case .Changed:
+        case .changed:
             let rotationStrength = min(xDistanceFromCenter / self.frame.size.width, rotationMax)
             let rotationAngle = animationDirection * defaultRotationAngle * rotationStrength
             let scaleStrength = 1 - ((1 - scaleMin) * fabs(rotationStrength))
             let scale = max(scaleStrength, scaleMin)
             
-            layer.rasterizationScale = scale * UIScreen.mainScreen().scale
+            layer.rasterizationScale = scale * UIScreen.main.scale
             
-            let transform = CGAffineTransformMakeRotation(rotationAngle)
-            let scaleTransform = CGAffineTransformScale(transform, scale, scale)
+            let transform = CGAffineTransform(rotationAngle: rotationAngle)
+            let scaleTransform = transform.scaledBy(x: scale, y: scale)
             
             self.transform = scaleTransform
             center = CGPoint(x: originalLocation.x + xDistanceFromCenter, y: originalLocation.y + yDistanceFromCenter)
@@ -222,7 +222,7 @@ public class DraggableCardView: UIView {
             delegate?.cardDraggedWithFinishPercent(self, percent: min(fabs(xDistanceFromCenter * 100 / frame.size.width), 100))
             
             break
-        case .Ended:
+        case .ended:
             swipeMadeAction()
             
             layer.shouldRasterize = false
@@ -236,7 +236,7 @@ public class DraggableCardView: UIView {
     }
     
     //MARK: Private
-    private func updateOverlayWithFinishPercent(percent: CGFloat) {
+    private func updateOverlayWithFinishPercent(_ percent: CGFloat) {
         if let overlayView = self.overlayView {
             overlayView.overlayState = percent > 0.0 ? OverlayMode.Right : OverlayMode.Left
             //Overlay is fully visible on half way
@@ -257,14 +257,14 @@ public class DraggableCardView: UIView {
     
     private func rightAction() {
         let finishY = originalLocation.y + yDistanceFromCenter
-        let finishPoint = CGPoint(x: CGRectGetWidth(UIScreen.mainScreen().bounds) * 2, y: finishY)
+        let finishPoint = CGPoint(x: UIScreen.main.bounds.width * 2, y: finishY)
         
         self.overlayView?.overlayState = OverlayMode.Right
         self.overlayView?.alpha = 1.0
         self.delegate?.cardSwippedInDirection(self, direction: SwipeResultDirection.Right)
-        UIView.animateWithDuration(cardSwipeActionAnimationDuration,
+        UIView.animate(withDuration: cardSwipeActionAnimationDuration,
             delay: 0.0,
-            options: .CurveLinear,
+            options: .curveLinear,
             animations: {
                 self.center = finishPoint
                 
@@ -279,14 +279,14 @@ public class DraggableCardView: UIView {
     
     private func leftAction() {
         let finishY = originalLocation.y + yDistanceFromCenter
-        let finishPoint = CGPoint(x: -CGRectGetWidth(UIScreen.mainScreen().bounds), y: finishY)
+        let finishPoint = CGPoint(x: -UIScreen.main.bounds.width, y: finishY)
         
         self.overlayView?.overlayState = OverlayMode.Left
         self.overlayView?.alpha = 1.0
         self.delegate?.cardSwippedInDirection(self, direction: SwipeResultDirection.Left)
-        UIView.animateWithDuration(cardSwipeActionAnimationDuration,
+        UIView.animate(withDuration: cardSwipeActionAnimationDuration,
             delay: 0.0,
-            options: .CurveLinear,
+            options: .curveLinear,
             animations: {
                 self.center = finishPoint
                 
@@ -304,22 +304,22 @@ public class DraggableCardView: UIView {
         
         let resetPositionAnimation = POPSpringAnimation(propertyNamed: kPOPLayerPosition)
         
-        resetPositionAnimation.toValue = NSValue(CGPoint: originalLocation)
-        resetPositionAnimation.springBounciness = cardResetAnimationSpringBounciness
-        resetPositionAnimation.springSpeed = cardResetAnimationSpringSpeed
-        resetPositionAnimation.completionBlock = {
+        resetPositionAnimation?.toValue = NSValue(cgPoint: originalLocation)
+        resetPositionAnimation?.springBounciness = cardResetAnimationSpringBounciness
+        resetPositionAnimation?.springSpeed = cardResetAnimationSpringSpeed
+        resetPositionAnimation?.completionBlock = {
             (_, _) in
             
             self.dragBegin = false
         }
         
-        pop_addAnimation(resetPositionAnimation, forKey: cardResetAnimationKey)
+        pop_add(resetPositionAnimation, forKey: cardResetAnimationKey)
         
-        UIView.animateWithDuration(cardResetAnimationDuration,
+        UIView.animate(withDuration: cardResetAnimationDuration,
             delay: 0.0,
-            options: [.CurveLinear, .AllowUserInteraction],
+            options: [.curveLinear, .allowUserInteraction],
             animations: {
-                self.transform = CGAffineTransformMakeRotation(0)
+                self.transform = CGAffineTransform(rotationAngle: 0)
                 self.overlayView?.alpha = 0
                 self.layoutIfNeeded()
                 
@@ -328,7 +328,7 @@ public class DraggableCardView: UIView {
             completion: {
                 _ in
                 
-                self.transform = CGAffineTransformIdentity
+                self.transform = CGAffineTransform.identity
                 
                 return
         })
@@ -339,14 +339,14 @@ public class DraggableCardView: UIView {
     func swipeLeft () {
         if !dragBegin {
             
-            let finishPoint = CGPoint(x: -CGRectGetWidth(UIScreen.mainScreen().bounds), y: center.y)
+            let finishPoint = CGPoint(x: -UIScreen.main.bounds.width, y: center.y)
             self.delegate?.cardSwippedInDirection(self, direction: SwipeResultDirection.Left)
-            UIView.animateWithDuration(cardSwipeActionAnimationDuration,
+            UIView.animate(withDuration: cardSwipeActionAnimationDuration,
                 delay: 0.0,
-                options: .CurveLinear,
+                options: .curveLinear,
                 animations: {
                     self.center = finishPoint
-                    self.transform = CGAffineTransformMakeRotation(CGFloat(-M_PI_4))
+                    self.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI_4))
                     
                     return
                 },
@@ -363,11 +363,11 @@ public class DraggableCardView: UIView {
     func swipeRight () {
         if !dragBegin {
             
-            let finishPoint = CGPoint(x: CGRectGetWidth(UIScreen.mainScreen().bounds) * 2, y: center.y)
+            let finishPoint = CGPoint(x: UIScreen.main.bounds.width * 2, y: center.y)
             self.delegate?.cardSwippedInDirection(self, direction: SwipeResultDirection.Right)
-            UIView.animateWithDuration(cardSwipeActionAnimationDuration, delay: 0.0, options: .CurveLinear, animations: {
+            UIView.animate(withDuration: cardSwipeActionAnimationDuration, delay: 0.0, options: .curveLinear, animations: {
                     self.center = finishPoint
-                    self.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_4))
+                    self.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI_4))
                     
                     return
                 },
