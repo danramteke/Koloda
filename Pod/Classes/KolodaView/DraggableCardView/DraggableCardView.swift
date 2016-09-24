@@ -75,9 +75,9 @@ public class DraggableCardView: UIView {
     }
     
     private func setup() {
-        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: Selector("panGestureRecognized:"))
+        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(DraggableCardView.panGestureRecognized))
         addGestureRecognizer(panGestureRecognizer)
-        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("tapRecognized:"))
+        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DraggableCardView.tapRecognized))
         addGestureRecognizer(tapGestureRecognizer)
     }
     
