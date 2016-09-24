@@ -13,6 +13,10 @@ import pop
 private var numberOfCards: UInt = 5
 
 class ViewController: UIViewController, KolodaViewDataSource, KolodaViewDelegate {
+    public func kolodaDidPresentCard(_ koloda: KolodaView, index: UInt) {
+        
+    }
+
     
     @IBOutlet weak var kolodaView: KolodaView!
     
@@ -29,11 +33,11 @@ class ViewController: UIViewController, KolodaViewDataSource, KolodaViewDelegate
     
     //MARK: IBActions
     @IBAction func leftButtonTapped() {
-        kolodaView?.swipe(SwipeResultDirection.Left)
+        kolodaView?.swipe(direction: SwipeResultDirection.Left)
     }
     
     @IBAction func rightButtonTapped() {
-        kolodaView?.swipe(SwipeResultDirection.Right)
+        kolodaView?.swipe(direction: SwipeResultDirection.Right)
     }
     
     @IBAction func undoButtonTapped() {
@@ -49,8 +53,8 @@ class ViewController: UIViewController, KolodaViewDataSource, KolodaViewDelegate
         return UIImageView(image: UIImage(named: "Card_like_\(index + 1)"))
     }
     func kolodaViewForCardOverlayAtIndex(_ koloda: KolodaView, index: UInt) -> OverlayView? {
-        return NSBundle.mainBundle().loadNibNamed("OverlayView",
-            owner: self, options: nil)[0] as? OverlayView
+        return Bundle.main.loadNibNamed("OverlayView",
+            owner: self, options: nil)?[0] as? OverlayView
     }
     
     //MARK: KolodaViewDelegate

@@ -33,11 +33,11 @@ class BackgroundAnimationViewController: UIViewController, KolodaViewDataSource,
     
     //MARK: IBActions
     @IBAction func leftButtonTapped() {
-        kolodaView?.swipe(SwipeResultDirection.Left)
+        kolodaView?.swipe(direction: SwipeResultDirection.Left)
     }
     
     @IBAction func rightButtonTapped() {
-        kolodaView?.swipe(SwipeResultDirection.Right)
+        kolodaView?.swipe(direction: SwipeResultDirection.Right)
     }
     
     @IBAction func undoButtonTapped() {
@@ -53,8 +53,8 @@ class BackgroundAnimationViewController: UIViewController, KolodaViewDataSource,
         return UIImageView(image: UIImage(named: "cards_\(index + 1)"))
     }
     func kolodaViewForCardOverlayAtIndex(_ koloda: KolodaView, index: UInt) -> OverlayView? {
-        return NSBundle.mainBundle().loadNibNamed("CustomOverlayView",
-            owner: self, options: nil)[0] as? OverlayView
+        return Bundle.main.loadNibNamed("CustomOverlayView",
+            owner: self, options: nil)?[0] as? OverlayView
     }
     
     //MARK: KolodaViewDelegate
@@ -84,9 +84,17 @@ class BackgroundAnimationViewController: UIViewController, KolodaViewDataSource,
     }
     
     func kolodaBackgroundCardAnimation(_ koloda: KolodaView) -> POPPropertyAnimation? {
-        let animation = POPSpringAnimation(propertyNamed: kPOPViewFrame)
+        let animation = POPSpringAnimation(propertyNamed: kPOPViewFrame)!
         animation.springBounciness = frameAnimationSpringBounciness
         animation.springSpeed = frameAnimationSpringSpeed
         return animation
     }
+    
+    
+    
+    
+    func kolodaDidPresentCard(_ koloda: KolodaView, index: UInt) {}
+    
+    
+    
 }

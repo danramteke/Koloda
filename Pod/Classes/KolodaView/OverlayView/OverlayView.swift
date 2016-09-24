@@ -16,8 +16,8 @@ public enum OverlayMode{
 }
 
 
-public class OverlayView: UIView {
+open class OverlayView: UIView {
     
-    public var overlayState:OverlayMode = OverlayMode.None
+    open var overlayState:OverlayMode = OverlayMode.None
 
 }

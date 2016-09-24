@@ -72,7 +72,7 @@ public extension KolodaViewDelegate {
     func kolodaBackgroundCardAnimation(_ koloda: KolodaView) -> POPPropertyAnimation? {return nil}
 }
 
-public class KolodaView: UIView, DraggableCardDelegate {
+open class KolodaView: UIView, DraggableCardDelegate {
     
     public weak var dataSource: KolodaViewDataSource! {
         didSet {
@@ -112,7 +112,7 @@ public class KolodaView: UIView, DraggableCardDelegate {
         unsubsribeFromNotifications()
     }
     
-    override public func layoutSubviews() {
+    override open func layoutSubviews() {
         super.layoutSubviews()
         
         if !self.configured {
@@ -168,14 +168,14 @@ public class KolodaView: UIView, DraggableCardDelegate {
         }
     }
     
-    public func layoutDeck() {
+    open func layoutDeck() {
         for (index, card) in self.visibleCards.enumerated() {
             card.frame = frameForCardAtIndex(UInt(index))
         }
     }
     
     //MARK: Frames
-    public func frameForCardAtIndex(_ index: UInt) -> CGRect {
+    open func frameForCardAtIndex(_ index: UInt) -> CGRect {
         let bottomOffset:CGFloat = 0
         let topOffset = backgroundCardsTopMargin * CGFloat(self.countOfVisibleCards - 1)
         let xOffset = backgroundCardsLeftMargin * CGFloat(index)
