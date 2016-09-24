@@ -183,7 +183,7 @@ public class DraggableCardView: UIView {
     
     //MARK: GestureRecozniers
     
-    func panGestureRecognized(gestureRecognizer: UIPanGestureRecognizer) {
+    public func panGestureRecognized(gestureRecognizer: UIPanGestureRecognizer) {
         xDistanceFromCenter = gestureRecognizer.translation(in: self).x
         yDistanceFromCenter = gestureRecognizer.translation(in: self).y
         
@@ -231,7 +231,7 @@ public class DraggableCardView: UIView {
         }
     }
     
-    func tapRecognized(recogznier: UITapGestureRecognizer) {
+    public func tapRecognized(recogznier: UITapGestureRecognizer) {
         delegate?.cardTapped(self)
     }
     
